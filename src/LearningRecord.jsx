@@ -7,6 +7,7 @@ import './App.css'
 function LearningRecord() {
   const [title, setTitle] = useState('');
   const [time, setTime] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [records, setRecords] = useState([]);
   const [isInput, setIsInput] = useState(true);
 
@@ -23,6 +24,7 @@ function LearningRecord() {
   }
 
   useEffect(() => {
+    setIsLoading(true);
     const fetchRecords = async () => {
       const { data, error } = await supabase.from('study-record').select('title, time');
 
@@ -31,6 +33,8 @@ function LearningRecord() {
       } else if (data && data.length > 0) {
         setRecords(data);
       }
+
+      setIsLoading(false);
     };
 
     fetchRecords();
@@ -61,6 +65,8 @@ function LearningRecord() {
       <p>{`入力されている学習内容：${title}`}</p>
       <p>{`入力されている学習内容：${time}時間`}</p>
       <button onClick={() => onClickSave(title, time)}>登録</button>
+      {isLoading ? <p>Loading中...</p> : (
+      <>
       {!isInput && (
         <p>入力されていない項目があります</p>
       )}
@@ -70,6 +76,8 @@ function LearningRecord() {
         </div>
       ))}
       <p>{`合計時間：${totalTime}`}/1000(h)</p>
+      </>
+      )}
     </>
   )
 }
