@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase-client'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -20,6 +21,20 @@ function LearningRecord() {
       setIsInput(false);
     }
   }
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      const { data, error } = await supabase.from('study-record').select('title, time');
+
+      if (error) {
+        console.error('データ取得エラー:', error.message);
+      } else if (data && data.length > 0) {
+        setRecords(data);
+      }
+    };
+
+    fetchRecords();
+  }, []);
 
   const totalTime = records.reduce((prev, record) => prev + record.time, 0);
 
