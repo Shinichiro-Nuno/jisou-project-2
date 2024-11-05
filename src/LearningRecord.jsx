@@ -30,10 +30,25 @@ function LearningRecord() {
     }
   }
 
+  const onClickDelete = async (recordId, index) => {
+    if (recordId) {
+    const { error } = await supabase.from('study-record').delete().eq('id', recordId);
+
+    if (error) {
+        console.error('データ削除エラー:', error.message);
+        return;
+    }
+
+    const newRecords = [...records];
+    newRecords.splice(index, 1);
+    setRecords(newRecords);
+    }
+  }
+
   useEffect(() => {
     setIsLoading(true);
     const fetchRecords = async () => {
-      const { data, error } = await supabase.from('study-record').select('title, time');
+      const { data, error } = await supabase.from('study-record').select('id, title, time');
 
       if (error) {
         console.error('データ取得エラー:', error.message);
@@ -78,8 +93,9 @@ function LearningRecord() {
         <p>入力されていない項目があります</p>
       )}
       {records.map((record, index) => (
-        <div key={index}>
-          <p>{`${record.title} ${record.time}時間`}</p>
+        <div style={{ display: 'flex', alignItems: 'center' }} key={index}>
+          <p style={{ marginRight: '8px'}}>{`${record.title} ${record.time}時間`}</p>
+          <button onClick={() => onClickDelete(record.id, index)}>削除</button>
         </div>
       ))}
       <p>{`合計時間：${totalTime}`}/1000(h)</p>
