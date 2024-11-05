@@ -11,9 +11,16 @@ function LearningRecord() {
   const [records, setRecords] = useState([]);
   const [isInput, setIsInput] = useState(true);
 
-  const onClickSave = (title, time) => {
-    const newRecords = [...records, {title, time}]
+  const onClickSave = async (title, time) => {
     if (title && time) {
+      const { error } = await supabase.from('study-record').insert({ title, time});
+
+      if (error) {
+        console.error('データ登録エラー:', error.message);
+        return;
+      }
+
+      const newRecords = [...records, {title, time}]
       setIsInput(true);
       setRecords(newRecords);
       setTitle('');
