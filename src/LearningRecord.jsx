@@ -66,17 +66,17 @@ function LearningRecord() {
 
   return (
     <>
-      <h1>学習記録一覧</h1>
-      <div>
-        <p>学習内容</p>
+      <h1><span style={{ color: 'pink'}}>✿</span>学習記録一覧<span style={{ color: 'pink'}}>✿</span></h1>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <p style={{ marginRight: '8px' }}>学習内容</p>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
       </div>
-      <div>
-        <p>学習時間</p>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <p style={{ marginRight: '8px' }}>学習時間</p>
         <input
           type="number"
           value={time}
