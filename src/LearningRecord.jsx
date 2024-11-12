@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase-client'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function LearningRecord() {
@@ -66,10 +64,11 @@ function LearningRecord() {
 
   return (
     <>
-      <h1><span style={{ color: 'pink'}}>✿</span>学習記録一覧<span style={{ color: 'pink'}}>✿</span></h1>
+      <h1 data-testid="title"><span style={{ color: 'pink'}}>✿</span>学習記録一覧<span style={{ color: 'pink'}}>✿</span></h1>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <p style={{ marginRight: '8px' }}>学習内容</p>
         <input
+          data-testid="title-input"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -78,6 +77,7 @@ function LearningRecord() {
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <p style={{ marginRight: '8px' }}>学習時間</p>
         <input
+          data-testid="time-input"
           type="number"
           value={time}
           min="0"
@@ -86,14 +86,18 @@ function LearningRecord() {
       </div>
       <p>{`入力されている学習内容：${title}`}</p>
       <p>{`入力されている学習内容：${time}時間`}</p>
-      <button onClick={() => onClickSave(title, time)}>登録</button>
+      <button
+        data-testid="save-button"
+        onClick={() => onClickSave(title, time)}>
+        登録
+      </button>
       {isLoading ? <p>Loading中...</p> : (
       <>
       {!isInput && (
-        <p>入力されていない項目があります</p>
+        <p data-testid="error-message">入力されていない項目があります</p>
       )}
       {records.map((record, index) => (
-        <div style={{ display: 'flex', alignItems: 'center' }} key={index}>
+        <div data-testid="record" style={{ display: 'flex', alignItems: 'center' }} key={index}>
           <p style={{ marginRight: '8px'}}>{`${record.title} ${record.time}時間`}</p>
           <button onClick={() => onClickDelete(record.id, index)}>削除</button>
         </div>
